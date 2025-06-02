@@ -14,15 +14,15 @@ datasource db {
 }
 
 model Role {
-  id          String       @id @default(cuid())
+  id          String       @id @default(uuid())
   name        String       @unique
   permissions Permission[]
 }
 
 model Permission {
-  id        String   @id @default(cuid())
-  action    String
-  subject   String
-  roleId    String
-  role      Role     @relation(fields: [roleId], references: [id])
+  id      String @id @default(uuid())
+  action  String
+  subject String
+  roleId  String
+  role    Role   @relation(fields: [roleId], references: [id])
 }
