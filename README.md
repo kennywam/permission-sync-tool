@@ -712,6 +712,35 @@ npm install
 npm run dev
 ```
 
+### Conventional Commits
+
+This project follows the [Conventional Commits specification](https://www.conventionalcommits.org/en/v1.0.0/). All commit messages must adhere to this format to ensure clear communication and automated versioning.
+
+```
+<type>(<scope>): <description>
+```
+
+#### Types
+- **feat**: A new feature
+- **fix**: A bug fix
+- **docs**: Documentation only changes
+- **style**: Changes that do not affect the meaning of the code
+- **refactor**: A code change that neither fixes a bug nor adds a feature
+- **perf**: A code change that improves performance
+- **test**: Adding missing tests or correcting existing tests
+- **build**: Changes that affect the build system or external dependencies
+- **chore**: Other changes that don't modify src or test files
+
+#### Creating Commits
+
+To make it easier to follow this convention, you can use our commit script:
+
+```bash
+npm run commit
+```
+
+This will guide you through creating a properly formatted commit message.
+
 ### Running Tests
 
 ```bash
