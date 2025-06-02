@@ -1,0 +1,35 @@
+{
+  "name": "permission-sync-tool",
+  "version": "1.0.0",
+  "description": "A simple CLI + library for syncing roles and permissions to your Prisma database and generating CASL abilities for NestJS and React apps.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kennywam/permission-sync-tool.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kennywam/permission-sync-tool/issues"
+  },
+  "homepage": "https://github.com/kennywam/permission-sync-tool#readme",
+  "dependencies": {
+    "@casl/ability": "^6.7.3",
+    "@prisma/client": "^6.8.2",
+    "casl": "^0.2.0",
+    "chalk": "^5.4.1",
+    "prisma": "^6.8.2"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
+  }
+}
