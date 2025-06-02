@@ -22,7 +22,11 @@
     "lint": "eslint src --ext .ts",
     "format": "prettier --write \"src/**/*.ts\"",
     "prepublishOnly": "npm run build",
-    "install-db": "node scripts/install.js"
+    "install-db": "node scripts/install.js",
+    "permission-sync-tool": "node dist/cli.js sync",
+    "sync:default": "tsx generate-config.ts && npx permission-sync-tool sync --force",
+    "sync:custom": "npx permission-sync-tool sync --config=./path/to/roles.ts",
+    "sync:prod": "npx permission-sync-tool sync --config=./config/roles.prod.ts"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"

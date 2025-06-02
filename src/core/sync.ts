@@ -1,8 +1,10 @@
 import { PrismaClient } from '@prisma/client';
 import chalk from 'chalk';
 import ora from 'ora';
+import { existsSync } from 'fs';
 import { loadConfig } from '../utils/config-loader';
 import { validateConfig } from '../utils/config-validator';
+import { generateConfig } from '../utils/config-generator';
 import type { SyncConfig, RoleConfig } from '../types';
 
 export async function syncPermissions(config: SyncConfig = {}) {
@@ -18,6 +20,15 @@ export async function syncPermissions(config: SyncConfig = {}) {
   const spinner = ora('Loading configuration...').start();
 
   try {
+    // Check if configuration file exists, if not generate it
+    if (!existsSync(configPath)) {
+      spinner.info(`Configuration file not found: ${configPath}`);
+      spinner.start('Generating default configuration file...');
+      await generateConfig(configPath, true);
+      spinner.succeed(`Default configuration file created at ${configPath}`);
+      spinner.start('Loading configuration...');
+    }
+    
     // Load and validate configuration
     const rolesConfig = await loadConfig(configPath);
     await validateConfig(configPath);
@@ -71,17 +82,36 @@ export async function syncPermissions(config: SyncConfig = {}) {
               where: { roles: { some: { id: existing.id } } },
             });
 
-            const permissionData = permissions.map(perm => ({
-              action: perm.action,
-              subject: perm.subject,
-              conditions: perm.conditions ? JSON.stringify(perm.conditions) : null,
-            }));
+            // Process each permission, checking if it already exists
+            const permissionPromises = permissions.map(async (perm) => {
+              // Use upsert to handle the case where the permission already exists
+              return prisma.permission.upsert({
+                where: {
+                  action_subject: {
+                    action: perm.action,
+                    subject: perm.subject
+                  }
+                },
+                update: {
+                  // Update conditions if they've changed
+                  conditions: perm.conditions ? JSON.stringify(perm.conditions) : null,
+                },
+                create: {
+                  action: perm.action,
+                  subject: perm.subject,
+                  conditions: perm.conditions ? JSON.stringify(perm.conditions) : null,
+                },
+              });
+            });
 
+            const createdPerms = await Promise.all(permissionPromises);
+
+            // Connect the permissions to the role
             await prisma.role.update({
               where: { id: existing.id },
               data: {
                 permissions: {
-                  create: permissionData,
+                  connect: createdPerms.map(perm => ({ id: perm.id })),
                 },
               },
             });
@@ -98,17 +128,36 @@ export async function syncPermissions(config: SyncConfig = {}) {
           }
         } else {
           // Create new role with permissions
-          const permissionData = permissions.map(perm => ({
-            action: perm.action,
-            subject: perm.subject,
-            conditions: perm.conditions ? JSON.stringify(perm.conditions) : null,
-          }));
+          // Process each permission, checking if it already exists
+          const permissionPromises = permissions.map(async (perm) => {
+            // Use upsert to handle the case where the permission already exists
+            return prisma.permission.upsert({
+              where: {
+                action_subject: {
+                  action: perm.action,
+                  subject: perm.subject
+                }
+              },
+              update: {
+                // Update conditions if they've changed
+                conditions: perm.conditions ? JSON.stringify(perm.conditions) : null,
+              },
+              create: {
+                action: perm.action,
+                subject: perm.subject,
+                conditions: perm.conditions ? JSON.stringify(perm.conditions) : null,
+              },
+            });
+          });
 
+          const createdPerms = await Promise.all(permissionPromises);
+
+          // Create the role and connect it to the permissions
           await prisma.role.create({
             data: {
               name: roleName,
               permissions: {
-                create: permissionData,
+                connect: createdPerms.map(perm => ({ id: perm.id })),
               },
             },
           });
