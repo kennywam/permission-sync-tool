@@ -697,8 +697,6 @@ DEBUG=permission-sync-tool npx permission-sync-tool sync
 
 1. Check the [GitHub Issues](https://github.com/kennywam/permission-sync-tool/issues)
 2. Review the [documentation](https://github.com/kennywam/permission-sync-tool#readme)
-3. Join our [Discord community](https://discord.gg/your-discord)
-
 ---
 
 ## 🤝 Contributing
