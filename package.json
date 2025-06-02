@@ -1,6 +1,6 @@
 {
   "name": "permission-sync-tool",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A powerful CLI tool and utility library for syncing roles and permissions to your Prisma database and generating CASL abilities for NestJS and React applications.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
