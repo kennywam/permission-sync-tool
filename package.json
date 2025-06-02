@@ -1,11 +1,27 @@
 {
   "name": "permission-sync-tool",
-  "version": "1.0.0",
-  "description": "A simple CLI + library for syncing roles and permissions to your Prisma database and generating CASL abilities for NestJS and React apps.",
-  "main": "index.js",
+  "version": "2.0.0",
+  "description": "A powerful CLI tool and utility library for syncing roles and permissions to your Prisma database and generating CASL abilities for NestJS and React applications.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "permission-sync-tool": "dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "sync": "tsx src/cli.ts",
+    "build": "tsc",
+    "dev": "tsx src/cli.ts",
+    "sync": "tsx src/cli.ts sync",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint src --ext .ts",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "prepublishOnly": "npm run build",
     "install-db": "node scripts/install.js"
   },
   "prisma": {
@@ -15,28 +31,58 @@
     "type": "git",
     "url": "git+https://github.com/kennywam/permission-sync-tool.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "permissions",
+    "roles",
+    "authorization",
+    "casl",
+    "prisma",
+    "nestjs",
+    "react",
+    "rbac",
+    "cli",
+    "typescript"
+  ],
+  "author": "Kenny Wambui <kenny@example.com>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/kennywam/permission-sync-tool/issues"
   },
   "homepage": "https://github.com/kennywam/permission-sync-tool#readme",
+  "engines": {
+    "node": ">=16.0.0"
+  },
   "dependencies": {
     "@casl/ability": "^6.7.3",
-    "@nestjs/common": "^11.1.2",
-    "@nestjs/core": "^11.1.2",
     "@prisma/client": "^6.8.2",
-    "casl": "^0.2.0",
     "chalk": "^5.4.1",
-    "express": "^5.1.0",
-    "prisma": "^6.8.2"
+    "commander": "^11.0.0",
+    "ora": "^7.0.0",
+    "inquirer": "^9.2.0"
   },
   "devDependencies": {
+    "@nestjs/common": "^11.1.2",
+    "@nestjs/core": "^11.1.2",
     "@types/express": "^5.0.2",
+    "@types/inquirer": "^9.0.0",
+    "@types/jest": "^29.5.0",
+    "@types/node": "^20.0.0",
     "@types/react": "^19.1.6",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "express": "^5.1.0",
+    "jest": "^29.5.0",
+    "prettier": "^3.0.0",
+    "prisma": "^6.8.2",
+    "react": "^18.0.0",
+    "ts-jest": "^29.1.0",
     "ts-node": "^10.9.2",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3"
+  },
+  "peerDependencies": {
+    "@prisma/client": "^4.0.0 || ^5.0.0 || ^6.0.0",
+    "prisma": "^4.0.0 || ^5.0.0 || ^6.0.0"
   }
 }
