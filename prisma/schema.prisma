@@ -13,16 +13,41 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id       String @id @default(cuid())
+  email    String @unique
+  name     String?
+  roles    Role[] @relation("UserRole")
+  
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  
+  @@map("users")
+}
+
 model Role {
-  id          String       @id @default(uuid())
+  id          String       @id @default(cuid())
   name        String       @unique
-  permissions Permission[]
+  description String?
+  permissions Permission[] @relation("RolePermission")
+  users       User[]       @relation("UserRole")
+  
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  
+  @@map("roles")
 }
 
 model Permission {
-  id      String @id @default(uuid())
-  action  String
-  subject String
-  roleId  String
-  role    Role   @relation(fields: [roleId], references: [id])
+  id         String  @id @default(cuid())
+  action     String
+  subject    String
+  conditions String? // JSON string for complex conditions
+  roles      Role[]  @relation("RolePermission")
+  
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  
+  @@unique([action, subject])
+  @@map("permissions")
 }
