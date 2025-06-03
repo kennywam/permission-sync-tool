@@ -65,8 +65,7 @@
   },
   "dependencies": {
     "@casl/ability": "^6.7.3",
-    "@prisma/client": "^4.0.0 || ^5.0.0 || ^6.0.0",
-    "chalk": "^5.4.1",
+    "chalk": "^4.1.2",
     "commander": "^11.0.0",
     "inquirer": "^9.2.0",
     "ora": "^7.0.0"
@@ -98,7 +97,21 @@
     "typescript": "^5.8.3"
   },
   "peerDependencies": {
+    "@nestjs/common": "^8.0.0 || ^9.0.0 || ^10.0.0 || ^11.0.0",
+    "@nestjs/core": "^8.0.0 || ^9.0.0 || ^10.0.0 || ^11.0.0",
     "@prisma/client": "^4.0.0 || ^5.0.0 || ^6.0.0",
-    "prisma": "^4.0.0 || ^5.0.0 || ^6.0.0"
+    "prisma": "^4.0.0 || ^5.0.0 || ^6.0.0",
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@nestjs/common": {
+      "optional": true
+    },
+    "@nestjs/core": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    }
   }
 }
